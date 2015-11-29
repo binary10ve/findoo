@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django_extensions',
+    'corsheaders',
     'rest_framework',
     'feeds',
     'rest_framework.authtoken',
@@ -68,8 +69,12 @@ INSTALLED_APPS = (
 #     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 # )
 
+CORS_ORIGIN_ALLOW_ALL = True
+#TODO need to use white listing instead
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
