@@ -9,29 +9,22 @@ Registration is a simple API allowing user to signup
 
 ### Create an user [POST]
 
++ Request (application/json)
+
+        {
+            "username": "johndoe",
+            "email" : "johndoe@mail.com",
+            "password1" : "letmein",
+            "password2": "letmein"
+        }
+
 + Response 200 (application/json)
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
+        
+        {
+            "key": "f982efd57ebc08ca24722022da2a67b64f2d4a3d"
+        }
+        
 
 ### Create a New Question [POST]
 
