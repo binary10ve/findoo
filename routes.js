@@ -17,7 +17,7 @@ module.exports = [
     config: controllers.users.forgotPassword
   },
   {
-    method: 'POST',
+    method: 'POST', //TODO - revert it back to post once done
     path: '/verifyEmail',
     config: controllers.users.verifyEmail
   },

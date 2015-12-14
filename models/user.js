@@ -5,7 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     username: DataTypes.STRING,
-    password: DataTypes.STRING
+    password: DataTypes.STRING,
+    verified : DataTypes.BOOLEAN
   }, {
     classMethods: {
       associate: function(models) {

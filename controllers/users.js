@@ -10,22 +10,23 @@ var privateKey = Config.key.privateKey;
 exports.create = {
     validate: {
         payload: {
+						firstname : Joi.string(),
+						lastname : Joi.string(),
             username: Joi.string().email().required(),
             password: Joi.string().required()
         }
     },
     handler: function(request, reply) {
         request.payload.password = Common.encrypt(request.payload.password);
-        request.payload.scope = "Customer";
         User.create(request.payload)
 				.then(function(user) {
                 var tokenData = {
                     username: user.username,
-                    scope: [user.scope],
                     id: user.id
                 };
-                Common.sentMailVerificationLink(user,Jwt.sign(tokenData, privateKey));
-                reply("Please confirm your email id by clicking on link in email");
+								var token = Jwt.sign(tokenData, privateKey);
+                Common.sentMailVerificationLink(user,token);
+                reply({ token : token}).code(201);
         }, function(err){
 					console.log("Some error", err)
 				});
@@ -35,17 +36,17 @@ exports.create = {
 exports.login = {
     validate: {
         payload: {
-            userName: Joi.string().email().required(),
+            username: Joi.string().email().required(),
             password: Joi.string().required()
         }
     },
     handler: function(request, reply) {
-        User.findUser(request.payload.userName, function(err, user) {
-            if (!err) {
-                if (user === null) return reply(Boom.forbidden("invalid username or password"));
-                if (request.payload.password === Common.decrypt(user.password)) {
 
-                    if(!user.isVerified) return reply("Your email address is not verified. please verify your email address to proceed");
+        User.findOne({where : {username : request.payload.username}})
+				.then(function(user) {
+                if (request.payload.password === Common.decrypt(user.password)) {
+										console.log(user)
+                    if(!user.verified) return reply({ message : "Your email address is not verified. please verify your email address to proceed"}).code(200);
 
                     var tokenData = {
                         userName: user.userName,
@@ -60,15 +61,10 @@ exports.login = {
 
                     reply(res);
                 } else reply(Boom.forbidden("invalid username or password"));
-            } else {
-                if (11000 === err.code || 11001 === err.code) {
-                    reply(Boom.forbidden("please provide another user email"));
-                } else {
-                        console.error(err);
-                        return reply(Boom.badImplementation(err));
-                }
-            }
-        });
+        })
+				.catch(function(){
+					return reply(Boom.forbidden("invalid username or password"));
+				})
     }
 };
 
@@ -125,26 +121,25 @@ exports.forgotPassword = {
 
 exports.verifyEmail = {
     handler: function(request, reply) {
-        Jwt.verify(request.headers.authorization.split(" ")[1], privateKey, function(err, decoded) {
+        Jwt.verify(request.payload.token, privateKey, function(err, decoded) {
             if(decoded === undefined) return reply(Boom.forbidden("invalid verification link"));
-            if(decoded.scope[0] != "Customer") return reply(Boom.forbidden("invalid verification link"));
-            User.findUserByIdAndUserName(decoded.id, decoded.userName, function(err, user){
-                if (err) {
-                    console.error(err);
-                    return reply(Boom.badImplementation(err));
-                }
-                if (user === null) return reply(Boom.forbidden("invalid verification link"));
-                if (user.isVerified === true) return reply(Boom.forbidden("account is already verified"));
-                user.isVerified = true;
-                User.updateUser(user, function(err, user){
-                    if (err) {
-                        console.error(err);
-                        return reply(Boom.badImplementation(err));
-                    }
-                    return reply("account sucessfully verified");
-
-                })
-            })
+						console.log("decoded",decoded)
+						User.findAll({
+							where : {
+								id :decoded.id,
+								username : decoded.username
+							}
+						})
+						.then(function(users){
+							if(users.length){
+								users.forEach(function(u){
+									u.update({verified : true})
+								})
+								return reply({message :  "account sucessfully verified"}).code(200);
+							}else{
+								return reply(Boom.forbidden("invalid verification link"));
+							}
+						})
 
         });
     }

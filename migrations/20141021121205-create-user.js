@@ -22,6 +22,9 @@ module.exports = {
       password: {
         type: DataTypes.STRING
       },
+      verified : {
+        type : DataTypes.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE
