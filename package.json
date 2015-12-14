@@ -1,0 +1,35 @@
+{
+  "name": "findoo",
+  "version": "0.0.1",
+  "description": "REST API server for serving findoo application.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/binary10ve/findoo.git"
+  },
+  "author": "Sanil Naik",
+  "bugs": {
+    "url": "https://github.com/binary10ve/findoo/issues"
+  },
+  "homepage": "https://github.com/binary10ve/findoo#readme",
+  "dependencies": {
+    "boom": "^2.6.1",
+    "config": "^1.8.1",
+    "good": "^6.4.0",
+    "good-console": "^5.2.0",
+    "hapi": "^11.1.2",
+    "hapi-auth-jwt": "^2.1.0",
+    "joi": "^5.1.0",
+    "jsonwebtoken": "^3.2.2",
+    "lodash": "^3.10.1",
+    "pg": "^4.4.3",
+    "pg-hstore": "^2.3.2",
+    "require-directory": "^2.0.0",
+    "sequelize": "^3.14.2",
+    "sequelize-cli": "^2.2.1",
+    "nodemailer": "^0.7.1"
+  }
+}
