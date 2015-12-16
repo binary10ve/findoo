@@ -3,9 +3,10 @@ var Hapi = require('hapi');
 var path = require('path');
 var settings = require('config');
 var Config = require('./config/settings');
-var routes = require('./routes');
+// var routes = require('./routes');
 var plugins = require('./plugins');
 var models = require('./models');
+var apiVersions = ['v1','v2'];
 
 var app = {};
 app.config = Config;
@@ -46,22 +47,15 @@ console.log("In setup")
 		}
 	});
 
-  // server.register([{
-  //     register: require('hapi-auth-jwt')
-  // }], function(err) {
-  //   //TODO Dont know why I am doing this.. I will come back to this later
-  //   console.log("Errr-", err)
-  //     server.auth.strategy('token', 'jwt', {
-  //         validateFunc: validate,
-  //         key: privateKey
-  //     });
-  // });
-  // Add the server routes
-  server.route(routes);
+  apiVersions.forEach(function(version){
+      server.route(require('./routes/'+ version ) );
+  })
 
     done();
 
 };
+
+
 
 var start = function(){
   server.start(function(){

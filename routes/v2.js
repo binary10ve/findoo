@@ -1,34 +1,33 @@
-var controllers = require('./controllers');
-
+var controllers = require('../controllers');
 module.exports = [
   {
     method: 'POST',
-    path: '/users',
+    path: '/api/v2/users',
     config: controllers.users.create
   },
   {
     method: 'POST',
-    path: '/login',
+    path: '/api/v2/login',
     config: controllers.users.login
   },
   {
     method: 'POST',
-    path: '/forgotPassword',
+    path: '/api/v2/forgotPassword',
     config: controllers.users.forgotPassword
   },
   {
-    method: 'POST', //TODO - revert it back to post once done
-    path: '/verifyEmail',
+    method: 'POST',
+    path: '/api/v2/verifyEmail',
     config: controllers.users.verifyEmail
   },
   {
     method: 'POST',
-    path: '/resendVerificationEmail',
+    path: '/api/v2/resendVerificationEmail',
     config: controllers.users.resendVerificationEmail
   },
   {
     method: 'GET',
-    path: '/salute/{name}',
+    path: '/api/v2/salute/{name}',
     config: controllers.users.salute
   }
 ];

@@ -49,13 +49,11 @@ exports.login = {
                     if(!user.verified) return reply({ message : "Your email address is not verified. please verify your email address to proceed"}).code(200);
 
                     var tokenData = {
-                        userName: user.userName,
-                        scope: [user.scope],
-                        id: user._id
+                        username: user.username,
+                        id: user.id
                     };
                     var res = {
-                        username: user.userName,
-                        scope: user.scope,
+                        username: user.username,
                         token: Jwt.sign(tokenData, privateKey)
                     };
 
@@ -84,9 +82,8 @@ exports.resendVerificationEmail = {
                     if(user.isVerified) return reply("your email address is already verified");
 
                      var tokenData = {
-                        userName: user.userName,
-                        scope: [user.scope],
-                        id: user._id
+                        userName: user.username,
+                        id: user.id
                     };
                     Common.sentMailVerificationLink(user,Jwt.sign(tokenData, privateKey));
                     reply("account verification link is sucessfully send to an email id");
