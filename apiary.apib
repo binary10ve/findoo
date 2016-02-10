@@ -1,21 +1,20 @@
 FORMAT: 1A
-HOST: http://localhost:3000/
+HOST: http://ec2-54-218-59-119.us-west-2.compute.amazonaws.com/api/v1
 
 # Findoo
 
 Registration is a simple API allowing user to signup
 
-## Signup [/registration/signup/]
+## Signup [/signup/]
 
 ### Create an user [POST]
 
 + Request (application/json)
 
         {
-            "username": "johndoe",
             "email" : "johndoe@mail.com",
-            "password1" : "letmein",
-            "password2": "letmein"
+            "password" : "letmein",
+            "verifyEmailUrl": "http://localhost:3000/#/verify-email"
         }
 
 + Response 200 (application/json)
@@ -25,6 +24,7 @@ Registration is a simple API allowing user to signup
             "key": "f982efd57ebc08ca24722022da2a67b64f2d4a3d"
         }
         
+## Login [/login/]
 
 ### Create a New Question [POST]
 
